@@ -1,5 +1,6 @@
 package ru.job4j.foodstorage.storage;
 
+import ru.job4j.foodstorage.calculator.ExpirationCalculator;
 import ru.job4j.foodstorage.food.Food;
 
 import java.time.Duration;
@@ -8,8 +9,9 @@ import java.time.LocalDateTime;
 public class Warehouse extends AbstractStore {
     /**
      * First of all we check that food is not expired
-     * validDays - the food valid in days
-     * passedDays - how many days passed after food was produced
+     * using calculateExpirationProgress() we get the ratio between the number of days that have passed
+     * to the total number of expiration days.
+     *
      * @param food food
      * @return true if pass requirements, false if not
      */
@@ -17,9 +19,8 @@ public class Warehouse extends AbstractStore {
     public boolean add(Food food) {
         LocalDateTime now = LocalDateTime.now();
         if (Duration.between(food.getExpiryDate(), now).isNegative()) {
-            long validDays = Duration.between(food.getCreateDate(), food.getExpiryDate()).toDays();
-            long passedDays = Duration.between(food.getCreateDate(), now).toDays();
-            if (passedDays * 100 / validDays <= 25) {
+            long ratio = ExpirationCalculator.calculateExpirationProgress(food);
+            if (ratio <= ALMOST_NEW) {
                 return super.add(food);
             }
         }

@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class AbstractStore implements Store {
+    protected static final int ALMOST_NEW = 25;
+    protected static final int TIME_TO_SELL = 75;
+    protected static final int EXPIRED = 100;
     private final List<Food> foodList = new ArrayList<>();
 
     @Override
