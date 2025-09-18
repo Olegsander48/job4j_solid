@@ -1,6 +1,5 @@
 package ru.job4j.carparking.parking;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ru.job4j.carparking.cars.Car;
 import ru.job4j.carparking.cars.CargoCar;
@@ -8,7 +7,6 @@ import ru.job4j.carparking.cars.PassengerCar;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Disabled
 class StreetParkingTest {
     @Test
     void whenParkPassengerCarOnParkingThenOk() {

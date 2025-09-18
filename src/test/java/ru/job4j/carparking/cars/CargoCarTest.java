@@ -1,11 +1,9 @@
 package ru.job4j.carparking.cars;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Disabled
 class CargoCarTest {
     @Test
     void whenCreateCargoCarWithPassengerCarSizeThenGetException() {
