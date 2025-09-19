@@ -39,7 +39,8 @@ public abstract class AbstractStore implements Store {
         return foodList.contains(food);
     }
 
-    protected List<Food> getFoodList() {
-        return foodList;
+    @Override
+    public void removeAll() {
+        foodList.clear();
     }
 }

@@ -3,6 +3,7 @@ package ru.job4j.foodstorage.auditor;
 import ru.job4j.foodstorage.food.Food;
 import ru.job4j.foodstorage.storage.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlQuality {
@@ -19,6 +20,17 @@ public class ControlQuality {
                     return;
                 }
             }
+        }
+    }
+
+    public void resort() {
+        List<Food> allFood = new ArrayList<>();
+        for (Store store : stores) {
+            allFood.addAll(store.getAll());
+            store.removeAll();
+        }
+        for (Food food : allFood) {
+            addProduct(food);
         }
     }
 }

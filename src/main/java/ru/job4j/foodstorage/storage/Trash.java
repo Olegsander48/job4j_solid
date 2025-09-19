@@ -6,10 +6,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Trash extends AbstractStore {
-    public void empty() {
-        getFoodList().clear();
-    }
-
     @Override
     public boolean add(Food food) {
         LocalDateTime now = LocalDateTime.now();

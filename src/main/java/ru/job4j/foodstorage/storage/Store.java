@@ -16,4 +16,5 @@ public interface Store {
 
     boolean contains(Food food);
 
+    void removeAll();
 }

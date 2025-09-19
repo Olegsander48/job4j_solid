@@ -2,9 +2,7 @@ package ru.job4j.foodstorage.auditor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.job4j.foodstorage.food.Meat;
-import ru.job4j.foodstorage.food.MeatType;
-import ru.job4j.foodstorage.food.Milk;
+import ru.job4j.foodstorage.food.*;
 import ru.job4j.foodstorage.storage.Shop;
 import ru.job4j.foodstorage.storage.Trash;
 import ru.job4j.foodstorage.storage.Warehouse;
@@ -137,5 +135,97 @@ class ControlQualityTest {
         assertThat(stores).hasSize(2);
         assertThat(stores.get(0).getAll()).isEmpty();
         assertThat(stores.get(1).getAll()).isEmpty();
+    }
+
+    /**
+     * Test case: checking that after resort same product stay at the same store
+     */
+    @Test
+    void whenAddNewMilkAndResortThenMilkInWarehouse() {
+        ControlQuality controlQuality = new ControlQuality(stores);
+        Milk milk = new Milk("Minskaya marka",
+                LocalDateTime.of(2025, 12, 30, 17, 25),
+                LocalDateTime.of(2025, 9, 17, 11, 34),
+                3,
+                0,
+                3.6,
+                900);
+        controlQuality.addProduct(milk);
+
+        controlQuality.resort();
+        
+        assertThat(stores.get(0).getAll()).isEmpty();
+        assertThat(stores.get(1).getAll())
+                .isNotEmpty()
+                .contains(milk);
+        assertThat(stores.get(2).getAll()).isEmpty();
+    }
+
+    /**
+     * Test case: checking that after resort same product stay at the same store
+     */
+    @Test
+    void whenAddMilkBreadAndAndMeatAndResortThenFoodInSameStores() {
+        ControlQuality controlQuality = new ControlQuality(stores);
+        Milk milk = new Milk("Minskaya marka",
+                LocalDateTime.of(2025, 12, 30, 17, 25),
+                LocalDateTime.of(2025, 9, 17, 11, 34),
+                3,
+                0,
+                3.6,
+                900);
+        controlQuality.addProduct(milk);
+
+        controlQuality.resort();
+
+        assertThat(stores.get(0).getAll()).isEmpty();
+        assertThat(stores.get(1).getAll())
+                .isNotEmpty()
+                .contains(milk);
+        assertThat(stores.get(2).getAll()).isEmpty();
+    }
+
+    /**
+     * Test case: checking that after resort all products at the same stores
+     */
+    @Test
+    void whenAddNewMilkAndChangeCreationDateToOldAndResortThenMilkInShopWithDiscount() {
+        ControlQuality controlQuality = new ControlQuality(stores);
+        int originalPrice = 3;
+        Milk milk = new Milk("Minskaya marka",
+                LocalDateTime.of(2025, 12, 30, 17, 25),
+                LocalDateTime.of(2025, 9, 17, 11, 34),
+                originalPrice,
+                0,
+                3.6,
+                900);
+        Meat meat = new Meat("neck",
+                LocalDateTime.of(2025, 12, 30, 17, 25),
+                LocalDateTime.of(2025, 6, 17, 11, 34),
+                34,
+                0,
+                MeatType.PORK,
+                2100);
+        Bread bread = new Bread("Borodinskiy",
+                LocalDateTime.of(2025, 5, 30, 17, 25),
+                LocalDateTime.of(2025, 1, 8, 11, 34),
+                25,
+                0,
+                230.50);
+        controlQuality.addProduct(milk);
+        controlQuality.addProduct(meat);
+        controlQuality.addProduct(bread);
+
+        controlQuality.resort();
+
+        assertThat(stores.get(0).getAll())
+                .isNotEmpty()
+                .contains(meat);
+        assertThat(stores.get(1).getAll())
+                .isNotEmpty()
+                .contains(milk);
+        assertThat(stores.get(2).getAll())
+                .isNotEmpty()
+                .contains(bread);
     }
 }
